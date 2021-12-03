@@ -1,0 +1,101 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: StakedHemetaHemeERC20V2
+    network: matic
+    source:
+      address: '0xAAc144Dc08cE39Ed92182dd85ded60E5000C9e67'
+      abi: StakedHemetaHemeERC20V2
+      startBlock: 21593526
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Transaction
+        - Approval
+        - LogRebase
+        - LogStakingContractUpdated
+        - LogSupply
+        - Transfer
+      abis:
+        - name: StakedHemetaHemeERC20V2
+          file: ./abis/StakedHemetaHemeERC20V2.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: LogRebase(indexed uint256,uint256,uint256)
+          handler: handleLogRebase
+        - event: LogStakingContractUpdated(address)
+          handler: handleLogStakingContractUpdated
+        - event: LogSupply(indexed uint256,uint256,uint256)
+          handler: handleLogSupply
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/StakedHemetaHemeERC20V2.ts
+
+  - kind: ethereum/contract
+    name: HemetaTreasury
+    network: matic
+    source:
+      address: '0x8ce47D56EAa1299d3e06FF3E04637449fFb01C9C'
+      abi: HemetaTreasury
+      startBlock: 21593526
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Transaction
+        - ProtocolMetric
+        - ChangeActivated
+        - ChangeQueued
+        - CreateDebt
+        - Deposit
+        - RepayDebt
+        - ReservesAudited
+        - ReservesManaged
+        - ReservesUpdated
+        - RewardsMinted
+        - Withdrawal
+      abis:
+        - name: HemetaTreasury
+          file: ./abis/HemetaTreasury.json
+        - name: StakedHemetaHemeERC20V2
+          file: ./abis/StakedHemetaHemeERC20V2.json
+        - name: HemetaHemeERC20V2
+          file: ./abis/HemetaHemeERC20V2.json
+        - name: HemetaBondStakeDepository
+          file: ./abis/HemetaBondStakeDepository.json
+        - name: HemetaStaking
+          file: ./abis/HemetaStaking.json
+        - name: HemeCirculatingSupply
+          file: ./abis/HemeCirculatingSupply.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: UniswapV2Pair
+          file: ./abis/UniswapV2Pair.json
+      eventHandlers:
+        - event: ChangeActivated(indexed uint8,address,bool)
+          handler: handleChangeActivated
+        - event: ChangeQueued(indexed uint8,address)
+          handler: handleChangeQueued
+        - event: CreateDebt(indexed address,indexed address,uint256,uint256)
+          handler: handleCreateDebt
+        - event: Deposit(indexed address,uint256,uint256)
+          handler: handleDeposit
+        - event: RepayDebt(indexed address,indexed address,uint256,uint256)
+          handler: handleRepayDebt
+        - event: ReservesAudited(indexed uint256)
+          handler: handleReservesAudited
+        - event: ReservesManaged(indexed address,uint256)
+          handler: handleReservesManaged
+        - event: ReservesUpdated(indexed uint256)
+          handler: handleReservesUpdated
+        - event: RewardsMinted(indexed address,indexed address,uint256)
+          handler: handleRewardsMinted
+        - event: Withdrawal(indexed address,uint256,uint256)
+          handler: handleWithdrawal
+      file: ./src/HemetaTreasury.ts
